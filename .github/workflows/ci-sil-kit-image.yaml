@@ -6,13 +6,13 @@ on:
 
 jobs:
   ubuntu-1804:
-    name: Push Docker image to ghcr.io registry
+    name: Build and test SIL Kit using the Ubuntu 18.04 image
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Build and push Docker image
+      - name: Build the Ubuntu 18.04 image
         uses: docker/build-push-action@v6
         with:
           context: ./containers/ci-ubuntu-18.04/
@@ -23,9 +23,33 @@ jobs:
           load: true
           tags: sil-kit-test:latest
 
-      - name: Test Image
+      - name: Test the image
         run: |
           docker run -itd --name emmy_noether sil-kit-test:latest /bin/bash
           docker cp ./utils/image_tests.sh emmy_noether:/home/image_tests.sh
-          docker exec -w /home/  emmy_noether sh image_tests.sh
+          docker exec -w /home/  emmy_noether sh image_tests.sh 8
+
+  ubuntu-2004:
+    name: Build and test SIL Kit using the Ubuntu 20.04 image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Build the Ubuntu 20.04 image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./containers/ci-ubuntu-20.04/
+          build-contexts: |
+            utils=./utils/
+          file: ./containers/ci-ubuntu-20.04/Dockerfile
+          push: false
+          load: true
+          tags: sil-kit-test:latest
+
+      - name: Test the image
+        run: |
+          docker run -itd --name emmy_noether sil-kit-test:latest /bin/bash
+          docker cp ./utils/image_tests.sh emmy_noether:/home/image_tests.sh
+          docker exec -w /home/  emmy_noether sh image_tests.sh 9
 
