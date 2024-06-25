@@ -15,10 +15,13 @@ jobs:
       - name: Build the Ubuntu 18.04 image
         uses: docker/build-push-action@v6
         with:
-          context: ./containers/ci-ubuntu-18.04/
+          context: ./containers/ci-ubuntu/
           build-contexts: |
             utils=./utils/
-          file: ./containers/ci-ubuntu-18.04/Dockerfile
+          build-args: |
+            UBUNTU_VERSION=18.04
+            GCC_VERSION=8
+          file: ./containers/ci-ubuntu/Dockerfile
           push: false
           load: true
           tags: sil-kit-test:latest
@@ -39,10 +42,13 @@ jobs:
       - name: Build the Ubuntu 20.04 image
         uses: docker/build-push-action@v6
         with:
-          context: ./containers/ci-ubuntu-20.04/
+          context: ./containers/ci-ubuntu/
           build-contexts: |
             utils=./utils/
-          file: ./containers/ci-ubuntu-20.04/Dockerfile
+          build-args: |
+            UBUNTU_VERSION=20.04
+            GCC_VERSION=9
+          file: ./containers/ci-ubuntu/Dockerfile
           push: false
           load: true
           tags: sil-kit-test:latest

@@ -1,10 +1,13 @@
-FROM ubuntu:20.04
+ARG UBUNTU_VERSION="18.04"
+
+FROM ubuntu:${UBUNTU_VERSION}
 
 ENV TZ "Europe/Berlin"
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
+ARG GCC_VERSION="8"
 RUN \
         apt-get update \
         && \
@@ -19,8 +22,8 @@ RUN \
         git \
         build-essential \
         sudo \
-        gcc-9 \
-        g++-9 \
+        gcc-${GCC_VERSION} \
+        g++-${GCC_VERSION} \
         lsb-base \
         lsb-release \
         ninja-build \
