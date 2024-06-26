@@ -7,7 +7,9 @@ ENV DEBIAN_FRONTEND "noninteractive"
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
-ARG GCC_VERSION="8"
+
+
+# Install dependencies
 RUN \
         apt-get update \
         && \
@@ -22,14 +24,10 @@ RUN \
         git \
         build-essential \
         sudo \
-        gcc-${GCC_VERSION} \
-        g++-${GCC_VERSION} \
         lsb-base \
         lsb-release \
         ninja-build \
         doxygen \
-        clang \
-        llvm \
         python3-pip \
         && \
         apt-get clean
@@ -37,8 +35,14 @@ RUN \
 COPY --from=utils fetch_cmake.sh /tmp/fetch_cmake.sh
 COPY --from=utils docs_requirements.txt /tmp
 
+ADD https://apt.llvm.org/llvm.sh /tmp
+
+
 RUN chmod +x /tmp/fetch_cmake.sh
 RUN /tmp/fetch_cmake.sh
 ENV PATH /opt/vector/bin:$PATH
-RUN python3 -m pip install  --upgrade pip
-RUN python3 -m pip install  -r /tmp/docs_requirements.txt
+RUN python3 -m  pip install --upgrade pip
+RUN python3 -m  pip install -r /tmp/docs_requirements.txt
+
+RUN chmod +x /tmp/llvm.sh
+RUN /tmp/llvm.sh 18
