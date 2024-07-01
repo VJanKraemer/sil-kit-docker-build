@@ -8,6 +8,7 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
 ARG GCC_VERSION="8"
+ARG CLANG_VERSION="6"
 RUN \
         apt-get update \
         && \
@@ -28,8 +29,8 @@ RUN \
         lsb-release \
         ninja-build \
         doxygen \
-        clang \
-        llvm \
+        clang-${CLANG_VERSION} \
+        llvm-${CLANG_VERSION} \
         python3-pip \
         && \
         apt-get clean
